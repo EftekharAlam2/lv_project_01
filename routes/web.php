@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +27,11 @@ Route::get('/dashboard', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
 
-
 Route::post('/add-employee', [EmployeeController::class, 'addEmployee'])->name('add.employee');
+
+Route::get('/get-locations', [LocationController::class, 'getLocations'])->name('get.locations');
+
+Route::get('/get-upazilas', [LocationController::class, 'getUpazilas'])->name('get.upazilas');
 
 
 Route::middleware('auth')->group(function () {

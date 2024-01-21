@@ -20,6 +20,8 @@ return new class extends Migration
             $table->json('numbers')->default(json_encode([]));
             $table->string('address');
             $table->date('dob');
+            $table->string('district');
+            $table->string('upazila');
             $table->timestamps();
         });
     }

@@ -17,5 +17,7 @@ class EmployeeInfo extends Model
         'numbers',
         'address',
         'dob',
+        'district',
+        'upazila',
     ];
 }

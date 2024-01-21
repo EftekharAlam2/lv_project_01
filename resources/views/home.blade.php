@@ -2,6 +2,8 @@
     <html>
 <head>
     <title>Home Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="m-5">
@@ -67,10 +69,19 @@
                         <label for="dob" class="form-label">Date of Birth</label>
                         <input type="date" class="form-control" name="dob">
                     </div>
-                    
-                    <!-- <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-success" onclick="addEmployeeForm()">Add Another Employee Form</button>
-                        <button type="button" class="btn btn-danger" onclick="removeEmployeeForm()">Remove Form</button>
+                    <div class="mb-3">
+                        <label for="district" class="form-label">District</label>
+                        <select class="form-select" id="district" name="district" onchange="fetchUpazilas(this.value)"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="upazila" class="form-label">Upazila</label>
+                        <select class="form-select" id="upazila" name="upazila"></select>
+                    </div>
+
+                    <!-- <div class="mb-3">
+                        <label for="village" class="form-label">Village</label>
+                        <select class="form-select" id="village" name="village"></select>
                     </div> -->
                 </div>
                 <button type="submit" class="btn btn-primary mt-3" name="submit">Submit</button>
@@ -93,44 +104,75 @@
                 <th>Phone Number</th>
                 <th>Address</th>
                 <th>Date of Birth</th>
-                <!-- <th>Action</th> -->
             </tr>
         </thead>
     </table>
-
-    <!-- <form method="post" action="logout.php">
-        <button class="btn btn-info" type="submit" name="logout">Logout</button>
-    </form> -->
-    <form method="POST" action="{{ route('logout') }}">
-            @csrf
-
-            <button type="submit" class="btn btn-info">
-                {{ __('Log Out') }}
-            </button>
-        </form>
     
-        <script>
-  const maxNumberFields = 3;
+    <script>
+        function fetchLocations() {
+            $.ajax({
+                url: "{{ route('get.locations') }}",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    populateSelectOptions("#district", data.districts);
+                    // populateSelectOptions("#upazila", data.upazilas);
+                    // populateSelectOptions("#village", data.villages);
+                    fetchUpazilas($('#district').val());
+                }
+            });
+        }
 
-  function addNumberField() {
-    const container = document.getElementById('numberContainer');
-    const numberFields = container.querySelectorAll('.input-group');
+        function fetchUpazilas(district) {
+            $.ajax({
+                url: "{{ route('get.upazilas') }}",
+                type: "GET",
+                dataType: "json",
+                data: { district: district },
+                success: function (data) {
+                    populateSelectOptions("#upazila", data.upazilas);
+                }
+            });
+        }
 
-    if (numberFields.length < maxNumberFields) {
-      const newInput = document.createElement('div');
-      newInput.className = 'input-group mb-3';
-      newInput.innerHTML = `
-        <input type="number" class="form-control" name="numbers[]" autocomplete="username">
-        <button type="button" class="btn btn-outline-danger" onclick="removeNumberField(this)">Remove</button>
-      `;
-      container.appendChild(newInput);
-    }
-  }
 
-  function removeNumberField(button) {
-    const container = document.getElementById('numberContainer');
-    container.removeChild(button.parentElement);
-  }
+        
+
+        function populateSelectOptions(selector, options) {
+            const selectElement = $(selector);
+            selectElement.empty();
+            $.each(options, function (key, value) {
+                selectElement.append('<option value="' + value + '">' + value + '</option>');
+            });
+        }
+
+        $('#staticBackdrop').on('shown.bs.modal', function () {
+            fetchLocations();
+        });
+
+        const maxNumberFields = 3;
+
+        function addNumberField() {
+            const container = document.getElementById('numberContainer');
+            const numberFields = container.querySelectorAll('.input-group');
+
+            if (numberFields.length < maxNumberFields) {
+            const newInput = document.createElement('div');
+            newInput.className = 'input-group mb-3';
+            newInput.innerHTML = `
+                <input type="number" class="form-control" name="numbers[]" autocomplete="username">
+                <button type="button" class="btn btn-outline-danger" onclick="removeNumberField(this)">Remove</button>
+            `;
+            container.appendChild(newInput);
+            }
+        }
+
+        function removeNumberField(button) {
+            const container = document.getElementById('numberContainer');
+            container.removeChild(button.parentElement);
+          }
+
+
 </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
