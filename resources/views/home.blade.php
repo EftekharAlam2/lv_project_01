@@ -29,10 +29,36 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" name="email">
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="number" class="form-label">Phone Number</label>
                         <input type="number" class="form-control" name="number" >
+                    </div> -->
+                    <div class="mb-3">
+                    <label for="number" class="form-label">Phone Number</label>
+                    <!-- <div id="numberContainer">
+                        <input type="number" id="number" class="form-control" name="numbers[]" value="{{ old('numbers.0') }}" autofocus autocomplete="name">
+                        <button type="button" class="btn btn-outline-primary" onclick="addNumberField()">Add Number</button>
+                    </div> -->
+                    <div id="numberContainer">
+                        @foreach(old('numbers', []) as $number)
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="numbers[]" value="{{ $number }}" autocomplete="name">
+                                    <button type="button" class="btn btn-outline-danger" onclick="removeNumberField(this)">Remove</button>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
+                    <button type="button" class="btn btn-outline-primary" onclick="addNumberField()">Add Number</button>
+                        @error('numbers.*')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    <!-- @error('numbers.*')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                    </div> -->
+
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
                         <input type="text" class="form-control" name="address">
@@ -82,6 +108,30 @@
                 {{ __('Log Out') }}
             </button>
         </form>
+    
+        <script>
+  const maxNumberFields = 3;
+
+  function addNumberField() {
+    const container = document.getElementById('numberContainer');
+    const numberFields = container.querySelectorAll('.input-group');
+
+    if (numberFields.length < maxNumberFields) {
+      const newInput = document.createElement('div');
+      newInput.className = 'input-group mb-3';
+      newInput.innerHTML = `
+        <input type="number" class="form-control" name="numbers[]" autocomplete="username">
+        <button type="button" class="btn btn-outline-danger" onclick="removeNumberField(this)">Remove</button>
+      `;
+      container.appendChild(newInput);
+    }
+  }
+
+  function removeNumberField(button) {
+    const container = document.getElementById('numberContainer');
+    container.removeChild(button.parentElement);
+  }
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -12,7 +12,8 @@ class EmployeeController extends Controller
        $request->validate([
             'name' => ['required', 'string', 'regex:/^[a-zA-Z ]+$/'],
             'email' => ['required', 'email'],
-            'number' => ['required', 'numeric'],
+            'numbers' => ['required', 'array'],
+          'numbers.*' => ['required', 'numeric'],
             'address' => ['required', 'string'],
             'dob' => ['required', 'date_format:Y-m-d'],
         ]);
@@ -20,7 +21,7 @@ class EmployeeController extends Controller
             EmployeeInfo::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'number' => $request->number,
+                'numbers' => json_encode($request->numbers),
                 'address' => $request->address,
                 'dob' => $request->dob,
             ]);

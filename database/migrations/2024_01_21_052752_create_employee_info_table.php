@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->string('number');
+            $table->json('numbers')->default(json_encode([]));
             $table->string('address');
             $table->date('dob');
             $table->timestamps();
