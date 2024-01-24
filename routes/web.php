@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,9 @@ use App\Http\Controllers\LocationController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/home', function () {
+    return view('home');
+});
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -33,6 +37,8 @@ Route::get('/get-locations', [LocationController::class, 'getLocations'])->name(
 
 Route::get('/get-upazilas', [LocationController::class, 'getUpazilas'])->name('get.upazilas');
 
+Route::get('/googleLogin', [SocialController::class, 'googleLogin']);
+Route::get('/auth/google/callback', [SocialController::class, 'googleHandle']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,3 +47,15 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+use Laravel\Socialite\Facades\Socialite;
+ 
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+});
+ 
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
+ 
+    // $user->token
+});

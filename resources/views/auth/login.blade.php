@@ -42,6 +42,11 @@
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
+
+            
         </div>
+        <a href="{{URL::to('/googleLogin')}}">
+                <img src="{{URL::asset('google-signin-button.png')}}" alt="" width="50%">
+            </a>
     </form>
 </x-guest-layout>
