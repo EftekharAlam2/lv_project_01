@@ -45,8 +45,13 @@
 
             
         </div>
+        <div class="d-flex">
         <a href="{{URL::to('/googleLogin')}}">
                 <img src="{{URL::asset('google-signin-button.png')}}" alt="" width="50%">
-            </a>
+        </a>
+        <!-- <a href="{{URL::to('/auth/callback')}}">
+                <img src="{{URL::asset('download.png')}}" alt="" width="65%">
+        </a> -->
+        </div>
     </form>
 </x-guest-layout>

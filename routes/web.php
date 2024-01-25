@@ -48,14 +48,20 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-use Laravel\Socialite\Facades\Socialite;
+// use Laravel\Socialite\Facades\Socialite;
+// use App\Models\User;
  
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('github')->redirect();
-});
+// Route::post('/auth/redirect', function () {
+//     return Socialite::driver('github')->redirect();
+// });
  
-Route::get('/auth/callback', function () {
-    $user = Socialite::driver('github')->user();
- 
-    // $user->token
-});
+// Route::get('/auth/callback', function () {
+//     $user = Socialite::driver('github')->user();
+//     User::updateOrCreate(['email' => $user->email], [
+//         'name' => $user->name,
+//         'password' => "123",
+//         'dob' => 12-12-2000,
+//     ]);
+//     Auth::login($user);
+//     return redirect('/home');
+// });
